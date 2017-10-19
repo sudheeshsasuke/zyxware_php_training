@@ -1,0 +1,11 @@
+body {
+                background: cyan;
+                color: black;
+            }
+            #display {
+                border: 3px solid red;
+                background: orange;
+                width: 200px;
+                padding: 30px;
+                margin: 0 auto;
+            }
