@@ -1,15 +1,3 @@
-<?php
-  if(!empty($_SESSION['username'])) {
-    $username = $_SESSION['username'];
-    $flag = 1;
-  }
-  else {
-    $username = 'Login';
-    $flag = 0;
-  }
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,13 +25,8 @@
           <a class="blog-nav-item" href="#">Press</a>
           <a class="blog-nav-item" href="#">New hires</a>
           <a class="blog-nav-item" href="#">About</a>
-          
-          <?php if($flag):?>
-            <a class="blog-nav-item moveright" href="/stage-5/index.php/logout"> Logout</a>
-          <?php else:?>
-            <a class="blog-nav-item moveright" href="/stage-5/index.php/register"> Register</a>
-          <?php endif;?>
-          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login"> <?php echo $username;?></a>
+          <a class="blog-nav-item moveright" href="/stage-5/index.php/register"> Register</a>
+          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login"> Login</a>
         </nav>
       </div>
     </div>

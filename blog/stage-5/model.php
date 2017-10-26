@@ -13,6 +13,7 @@ function open_database_connection()
     return $link;
 }
 
+
 function close_database_connection($link)
 {
     //TODO: close database connection
@@ -44,4 +45,39 @@ function get_post($id)
     $post = $result->fetch(PDO::FETCH_ASSOC);
     close_database_connection($link);
     return $post;
+}
+
+//adding data to user database table
+function addUser($name, $email, $password)
+{
+    $link = open_database_connection();
+
+    $result = $link->prepare("INSERT INTO users(username, email, password) VALUES(:name, :email, :password)");
+    $result->bindParam(':name',$name); 
+    $result->bindParam(':email',$email); 
+    $result->bindParam(':password',sha1($password));
+   // $password = sha1($password);
+    $result->execute();
+}
+
+//checking user with user database table
+function checkUser($name, $password)
+{
+    $link = open_database_connection();
+
+    $password = sha1($password);
+    
+    $result = $link->prepare("SELECT * FROM `users` WHERE username = :name AND password = :password");
+    $result->bindParam(':name',$name); 
+    $result->bindParam(':password', $password);
+    
+    //debug
+    $t = $result->execute();
+    $row = $result->fetch(PDO::FETCH_ASSOC);
+    
+    if($password === $row['password']) {
+        return $row;
+    } else {
+        return NULL;
+    }
 }
