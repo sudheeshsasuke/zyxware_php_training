@@ -52,10 +52,14 @@ function addUser($name, $email, $password)
 {
     $link = open_database_connection();
 
-    $result = $link->prepare("INSERT INTO users(username, email, password) VALUES(:name, :email, :password)");
+    $result = $link->prepare("INSERT INTO `users`
+    (`username`, `email`, `password`, `image_path`) 
+    VALUES (:name, :email, :password, :path)");
     $result->bindParam(':name',$name); 
     $result->bindParam(':email',$email); 
     $result->bindParam(':password',sha1($password));
+    $result->bindParam(':path', $_SESSION['taget_image_path']);
+    
    // $password = sha1($password);
     $result->execute();
 }
@@ -80,4 +84,16 @@ function checkUser($name, $password)
     } else {
         return NULL;
     }
+}
+
+//GetImageName()
+// i.e fetch the last inserted id and add one to it
+//it will be the image name
+function GetImageName() {
+    $link = open_database_connection();
+    $result = $link->query('SELECT MAX(id) AS lastId FROM `users`');
+    $row = $result->fetch(PDO::FETCH_ASSOC);
+    $name = $row['lastId'];
+    $name += 1;
+    return $name;
 }

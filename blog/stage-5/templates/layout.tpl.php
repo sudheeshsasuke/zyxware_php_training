@@ -4,7 +4,6 @@
     $flag = 1;
   }
   else {
-    $username = 'Login';
     $flag = 0;
   }
 
@@ -38,12 +37,18 @@
           <a class="blog-nav-item" href="#">New hires</a>
           <a class="blog-nav-item" href="#">About</a>
           
+
+          <a class="blog-nav-item moveright" href="/stage-5/index.php/#"> <?php echo htmlentities($username);?></a>
           <?php if($flag):?>
+          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login"> 
+            <img src="http://blog/stage-5/<?=$_SESSION['taget_image_path'];?>" alt="profile" width="30" />
+          </a>
             <a class="blog-nav-item moveright" href="/stage-5/index.php/logout"> Logout</a>
           <?php else:?>
+          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login">Login</a>
             <a class="blog-nav-item moveright" href="/stage-5/index.php/register"> Register</a>
           <?php endif;?>
-          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login"> <?php echo $username;?></a>
+        
         </nav>
       </div>
     </div>

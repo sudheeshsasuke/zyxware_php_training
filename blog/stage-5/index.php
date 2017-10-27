@@ -31,16 +31,10 @@ elseif ('/stage-5/index.php/show' == $uri && isset($_GET['id'])) {
     register();
     
 } elseif ('/stage-5/index.php/register_action' == $uri) {
-    //TODO: resgister
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
     
-    RegisterUser($name,$email, $password);
-   // addUser($name,$email, $password);
-   
-    //list_action();
-    login();
+    //TODO: resgister
+     RegisterAction();
+    
 }
 elseif ('/stage-5/index.php/login_action' == $uri) {
     //TODO: resgister
