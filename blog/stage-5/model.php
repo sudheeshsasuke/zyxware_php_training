@@ -51,17 +51,22 @@ function get_post($id)
 function addUser($name, $email, $password)
 {
     $link = open_database_connection();
-
+    $password = sha1($password);
     $result = $link->prepare("INSERT INTO `users`
     (`username`, `email`, `password`, `image_path`) 
     VALUES (:name, :email, :password, :path)");
     $result->bindParam(':name',$name); 
     $result->bindParam(':email',$email); 
-    $result->bindParam(':password',sha1($password));
+    $result->bindParam(':password',$password);
     $result->bindParam(':path', $_SESSION['taget_image_path']);
     
    // $password = sha1($password);
-    $result->execute();
+    $t = $result->execute();
+
+    //set image name
+    $_SESSION['image_name'] = $link->lastInsertId();
+    close_database_connection($link);
+    return $t;
 }
 
 //checking user with user database table
@@ -78,7 +83,7 @@ function checkUser($name, $password)
     //debug
     $t = $result->execute();
     $row = $result->fetch(PDO::FETCH_ASSOC);
-    
+    close_database_connection($link);
     if($password === $row['password']) {
         return $row;
     } else {
@@ -90,10 +95,26 @@ function checkUser($name, $password)
 // i.e fetch the last inserted id and add one to it
 //it will be the image name
 function GetImageName() {
+    /*
     $link = open_database_connection();
     $result = $link->query('SELECT MAX(id) AS lastId FROM `users`');
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $name = $row['lastId'];
     $name += 1;
-    return $name;
+    */
+    return $_SESSION['image_name'];
+}
+
+//update image path
+function UpdateUser($name, $password) {
+    $link = open_database_connection();
+    $password = sha1($password);
+    $result = $link->prepare("UPDATE `users` SET `image_path`=:val 
+    WHERE `username`=:user AND `password`=:pass");
+    $result->bindParam(':val', $_SESSION['taget_image_path']);
+    $result->bindParam(':user', $name);
+    $result->bindParam(':pass', $password);
+
+    $t = $result->execute();
+    close_database_connection($link);
 }

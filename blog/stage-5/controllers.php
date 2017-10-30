@@ -32,7 +32,8 @@ function loginTemplate()
 
  function RegisterUser($name,$email, $password) 
  {
-     adduser($name,$email, $password);
+     $status = adduser($name,$email, $password);
+     return $status;
  }
 
  function LoginUser($name, $password) {
@@ -125,16 +126,20 @@ function ImageUpload() {
             $status .= "Sorry, there was an error uploading your file.";
         }
     }
-
+    
     //target file path
-    $_SESSION['taget_image_path'] = $target_file;
+   $_SESSION['taget_image_path'] = $target_file;
 
     return $status;
 }
 
 //perform RegisterAction()
 function RegisterAction() {
-    
+ 
+    /*
+    **  working code which uploads the image with the expected insertion row id
+    **  then insert the row in the db
+    **
     //fileupload
     $status = ImageUpload();
     
@@ -153,5 +158,39 @@ function RegisterAction() {
         RegisterUser($_POST['name'], $_POST['email'], $_POST['password']);
         login();
     }
+   */ 
+  /*
+    **  new update
+    **  insert row then upload image with that row id name
+    **
+  */
+   
+  //target file path
+   $_SESSION['taget_image_path'] = NULL;
+
+  $register_status = RegisterUser($_POST['name'], $_POST['email'], $_POST['password']);
+
+  //check insertion status
+  if($register_status == false) {
+    $content = "<br> ERROR REGISTERING THE USER<br><brPLEASE RE REGISTER";
+    include 'templates/layout.tpl.php';
+  }
+  else {
+      //fileupload
+    $status = ImageUpload();
+
+    //update image path
+    UpdateUser($_POST['name'], $_POST['password']);
     
+    //if error status exists
+    if(!empty($status)) {
+        $content = $status;
+    
+        //call layout template
+        include 'templates/layout.tpl.php';
+    }
+    else {
+        login();
+    }
+  }
 }
