@@ -40,12 +40,12 @@
 
           <a class="blog-nav-item moveright" href="/stage-5/index.php/#"> <?php echo htmlentities($username);?></a>
           <?php if($flag):?>
-          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login"> 
-            <img src="http://blog/stage-5/<?=$_SESSION['taget_image_path'];?>" alt="profile" width="30" />
-          </a>
-            <a class="blog-nav-item moveright" href="/stage-5/index.php/logout"> Logout</a>
+            <a class="blog-nav-item moveright" href="/stage-5/index.php/Login"> 
+              <img src="http://blog/stage-5/<?=$_SESSION['taget_image_path'];?>" alt="profile" width="30" />
+            </a>
+              <a class="blog-nav-item moveright" href="/stage-5/index.php/logout"> Logout</a>
           <?php else:?>
-          <a class="blog-nav-item moveright" href="/stage-5/index.php/Login">Login</a>
+            <a class="blog-nav-item moveright" href="/stage-5/index.php/Login">Login</a>
             <a class="blog-nav-item moveright" href="/stage-5/index.php/register"> Register</a>
           <?php endif;?>
         
@@ -62,7 +62,7 @@
 
       <div class="row">
         <div class="col-sm-8 blog-main">
-          <?php echo $content ?>
+          <?php echo $content; ?>
         </div><!-- /.blog-main -->
 
         <div class="col-sm-3 col-sm-offset-1 blog-sidebar">

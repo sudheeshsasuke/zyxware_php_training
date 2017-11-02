@@ -1,120 +1,137 @@
 <?php
+
 // model.php
-function open_database_connection()
-{
-    //TODO: connect to the database and return the link object
-    $server = 'blog';
-    $dbname = 'blog';
-    $username = 'root';
-    $password = 'root';
+//require_once 'database.php';
 
-    $link = new PDO("mysql:host=$server;dbname=$dbname", $username, $password);
+class model extends database {
 
-    return $link;
-}
+    public function get_all_posts()
+    {
+        //TODO: fetch all posts from the db and close the database connection.
+        /* $link = $this->open_database_connection();
 
+        $result = $link->query('SELECT * FROM post');
+        while($row = $result->fetch(PDO::FETCH_ASSOC)){
+            $posts[] = $row;
+        }
 
-function close_database_connection($link)
-{
-    //TODO: close database connection
-    $link = null;
-}
-
-function get_all_posts()
-{
-    //TODO: fetch all posts from the db and close the database connection.
-    $link = open_database_connection();
-
-    $result = $link->query('SELECT * FROM post');
-    while($row = $result->fetch(PDO::FETCH_ASSOC)){
-        $posts[] = $row;
+        $this->close_database_connection($link);
+        return $posts; */
+        $query = "SELECT * FROM post";
+        $posts = $this->query_execute($query, NULL);
+        return $posts;
     }
 
-    close_database_connection($link);
-    return $posts;
-}
+    public function get_post($id)
+    {
+        //TODO: fetch a post by id from the db and close the database connection.
+        /*  $link = open_database_connection();
+        $result = $link->prepare("SELECT * FROM post
+        WHERE id = :id");
+        $result->bindParam(':id', $id);
+        $result->execute();
+        $post = $result->fetch(PDO::FETCH_ASSOC);
+        $this->close_database_connection($link);
+        return $post; */
+        $query = "SELECT * FROM post"
+        . " WHERE id = :id";
+        
+        //parse_str(":id=$id", $values);
+        $values = array(':id' => $id);
+        $posts = $this->query_execute($query, $values);
+        return $posts[0];
 
-function get_post($id)
-{
-    //TODO: fetch a post by id from the db and close the database connection.
-    $link = open_database_connection();
-    $result = $link->prepare("SELECT * FROM post
-    WHERE id = :id");
-    $result->bindParam(':id', $id);
-    $result->execute();
-    $post = $result->fetch(PDO::FETCH_ASSOC);
-    close_database_connection($link);
-    return $post;
-}
-
-//adding data to user database table
-function addUser($name, $email, $password)
-{
-    $link = open_database_connection();
-    $password = sha1($password);
-    $result = $link->prepare("INSERT INTO `users`
-    (`username`, `email`, `password`, `image_path`) 
-    VALUES (:name, :email, :password, :path)");
-    $result->bindParam(':name',$name); 
-    $result->bindParam(':email',$email); 
-    $result->bindParam(':password',$password);
-    $result->bindParam(':path', $_SESSION['taget_image_path']);
-    
-   // $password = sha1($password);
-    $t = $result->execute();
-
-    //set image name
-    $_SESSION['image_name'] = $link->lastInsertId();
-    close_database_connection($link);
-    return $t;
-}
-
-//checking user with user database table
-function checkUser($name, $password)
-{
-    $link = open_database_connection();
-
-    $password = sha1($password);
-    
-    $result = $link->prepare("SELECT * FROM `users` WHERE username = :name AND password = :password");
-    $result->bindParam(':name',$name); 
-    $result->bindParam(':password', $password);
-    
-    //debug
-    $t = $result->execute();
-    $row = $result->fetch(PDO::FETCH_ASSOC);
-    close_database_connection($link);
-    if($password === $row['password']) {
-        return $row;
-    } else {
-        return NULL;
     }
-}
 
-//GetImageName()
-// i.e fetch the last inserted id and add one to it
-//it will be the image name
-function GetImageName() {
-    /*
-    $link = open_database_connection();
-    $result = $link->query('SELECT MAX(id) AS lastId FROM `users`');
-    $row = $result->fetch(PDO::FETCH_ASSOC);
-    $name = $row['lastId'];
-    $name += 1;
-    */
-    return $_SESSION['image_name'];
-}
+    //adding data to user database table
+    public function addUser($name, $email, $password)
+    {
+        /* $link = $this->open_database_connection();
+        $password = sha1($password);
+        $result = $link->prepare("INSERT INTO `users`
+        (`username`, `email`, `password`, `image_path`) 
+        VALUES (:name, :email, :password, :path)");
+        $result->bindParam(':name',$name); 
+        $result->bindParam(':email',$email); 
+        $result->bindParam(':password',$password);
+        $result->bindParam(':path', $_SESSION['taget_image_path']);
+        
+        // $password = sha1($password);
+        $t = $result->execute();
 
-//update image path
-function UpdateUser($name, $password) {
-    $link = open_database_connection();
-    $password = sha1($password);
-    $result = $link->prepare("UPDATE `users` SET `image_path`=:val 
-    WHERE `username`=:user AND `password`=:pass");
-    $result->bindParam(':val', $_SESSION['taget_image_path']);
-    $result->bindParam(':user', $name);
-    $result->bindParam(':pass', $password);
+        //set image name
+        $_SESSION['image_name'] = $link->lastInsertId();
+        $this->close_database_connection($link);
+        return $t; */
+        $query = "INSERT INTO `users`(`username`, `email`, `password`, `image_path`)" 
+        . " VALUES (:name, :email, :password, :path)";
+        $values = array(':name' => $name,
+            ':email' => $email,
+            ':password' => sha1($password),
+            ':path' => $_SESSION['taget_image_path']
+        );
+        $posts = $this->query_execute($query, $values);
+        $_SESSION['image_name'] = $this->lastId;
+        return $this->t;
+    }
 
-    $t = $result->execute();
-    close_database_connection($link);
+    //checking user with user database table
+    public function checkUser($name, $password)
+    {
+        /* $link = $this->open_database_connection();
+
+        $password = sha1($password);
+        
+        $result = $link->prepare("SELECT * FROM `users` WHERE username = :name AND password = :password");
+        $result->bindParam(':name',$name); 
+        $result->bindParam(':password', $password);
+        
+        //debug
+        $t = $result->execute();
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+        $this->close_database_connection($link);
+        if($password === $row['password']) {
+            return $row;
+        } else {
+            return NULL;
+        } */
+        $password = sha1($password);
+        $query = "SELECT * FROM `users`" 
+        . " WHERE `username` = :name AND `password` = :password";
+        
+        //parse_str(":name=$name&:password=$password", $values);
+        $values = array(':name' => $name,
+            ':password' => $password
+        );
+        $posts = $this->query_execute($query, $values);
+        return $posts[0];
+    }
+
+    //GetImageName()
+    // i.e fetch the last inserted id and add one to it
+    //it will be the image name
+    public function GetImageName() {
+        return $_SESSION['image_name'];
+    }
+
+    //update image path
+    public function UpdateUser($name, $password) {
+       /*  $link = $this->open_database_connection();
+        $password = sha1($password);
+        $result = $link->prepare("UPDATE `users` SET `image_path`=:val 
+        WHERE `username`=:user AND `password`=:pass");
+        $result->bindParam(':val', $_SESSION['taget_image_path']);
+        $result->bindParam(':user', $name);
+        $result->bindParam(':pass', $password);
+
+        $t = $result->execute();
+        $this->close_database_connection($link); */
+        $query = "UPDATE `users` SET `image_path`=:val "
+        . " WHERE `username`=:user AND `password`=:pass";
+        $values = array(':val' => $_SESSION['taget_image_path'],
+            ':user' => $name,
+            ':pass' => sha1($password)
+        );
+        $posts = $this->query_execute($query, $values);
+    }
 }

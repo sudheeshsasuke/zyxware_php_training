@@ -5,7 +5,8 @@ function Validate()
     if(input === '') {
         alert("Form is empty");
         return false;
-    } else {
+    } 
+    else {
         return true;
     }
 }

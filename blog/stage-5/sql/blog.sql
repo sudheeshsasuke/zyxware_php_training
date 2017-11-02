@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 27, 2017 at 05:06 PM
+-- Generation Time: Nov 02, 2017 at 05:29 PM
 -- Server version: 5.7.20-0ubuntu0.16.04.1
 -- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
@@ -62,11 +62,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `image_path`) VALUES
-(1, 'cat', 'cat@cat', '9d989e8d27dc9e0ec3389fc855f142c3d40f0c50', 'uploads/1.jpg'),
-(26, 'asd', 'asda', 'asad', 'asdada'),
-(27, 'gesff', 'werwred@gdg', 'f1cb38fe82ede99eef2ba155b497066533c7adc8', 'uploads/27.jpg'),
-(28, 'cat', 'cat@cat', '9d989e8d27dc9e0ec3389fc855f142c3d40f0c50', 'uploads/28.jpg'),
-(29, 'jithin', 'sdfsf@gdfdg', '65c6a0c77aa59444a785ce12c261692862ee6c30', 'uploads/29.jpg');
+(40, 'cat', 'cat@cat', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', 'uploads/40.jpg'),
+(55, 'grumpycat', 'grumpycat@gmail.com', '9d989e8d27dc9e0ec3389fc855f142c3d40f0c50', NULL),
+(56, 'grumpycat', 'grumpycat@gmail.com', '9d989e8d27dc9e0ec3389fc855f142c3d40f0c50', NULL),
+(57, 'glen', 'werwred@gdg', 'c226bcbeea1369fe10f943fcc1abb3ac7d5f8286', NULL),
+(58, 'meow', 'werwred@gdg', '7d5c2a2d6136fbf166211d5183bf66214a247f31', NULL),
+(59, '123', 'dgdg@dfd', '40bd001563085fc35165329ea1ff5c5ecbdbbeef', NULL),
+(60, 'asd', 'asda@gdfg', 'f10e2821bbbea527ea02200352313bc059445190', NULL),
+(61, 'asdf', 'asda@gdfg', '3da541559918a808c2402bba5012f6c60b27661c', 'uploads/61.png'),
+(62, 'bnm', 'bnm@bnm', '6c82c6eefcd93e05b3e632153c424a7303ec650d', 'uploads/62.png');
 
 --
 -- Indexes for dumped tables
@@ -97,7 +101,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
