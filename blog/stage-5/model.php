@@ -15,10 +15,18 @@ class model extends database {
             $posts[] = $row;
         }
 
+        // code part using single query ()
+
         $this->close_database_connection($link);
         return $posts; */
-        $query = "SELECT * FROM post";
+
+        /* $query = "SELECT * FROM post";
         $posts = $this->query_execute($query, NULL);
+        return $posts; */
+
+        //optimized code
+        $posts = $this->prepare("SELECT" , "*", "post", NULL)
+                    ->fetch();
         return $posts;
     }
 
@@ -33,14 +41,22 @@ class model extends database {
         $post = $result->fetch(PDO::FETCH_ASSOC);
         $this->close_database_connection($link);
         return $post; */
-        $query = "SELECT * FROM post"
+
+        /* $query = "SELECT * FROM post"
         . " WHERE id = :id";
         
         //parse_str(":id=$id", $values);
         $values = array(':id' => $id);
         $posts = $this->query_execute($query, $values);
-        return $posts[0];
+        return $posts[0]; */
 
+        //optimized code
+        $values = array('id' => $id);
+        $posts = $this->prepare("SELECT" , "*", "post", $values)
+                    ->bind($values)
+                    ->execute()
+                    ->fetch();
+        return $posts[0];
     }
 
     //adding data to user database table
@@ -63,7 +79,9 @@ class model extends database {
         $_SESSION['image_name'] = $link->lastInsertId();
         $this->close_database_connection($link);
         return $t; */
-        $query = "INSERT INTO `users`(`username`, `email`, `password`, `image_path`)" 
+
+
+        /* $query = "INSERT INTO `users`(`username`, `email`, `password`, `image_path`)" 
         . " VALUES (:name, :email, :password, :path)";
         $values = array(':name' => $name,
             ':email' => $email,
@@ -72,7 +90,19 @@ class model extends database {
         );
         $posts = $this->query_execute($query, $values);
         $_SESSION['image_name'] = $this->lastId;
-        return $this->t;
+        return $this->t; */
+
+        //optimized code
+        $values = array('username' => $name,
+            'email' => $email,
+            'password' => sha1($password),
+            'image_path' => $_SESSION['taget_image_path']
+        );
+        $obj = $this->prepare("INSERT", NULL, 'users', $values)
+                    ->bind($values)
+                    ->execute();
+        $_SESSION['image_name'] = $obj->last_insert_id(); //calling last inert id()seperately
+        return $obj->t;         
     }
 
     //checking user with user database table
