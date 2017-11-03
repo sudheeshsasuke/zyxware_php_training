@@ -86,8 +86,10 @@ class database {
     *   @params
     */
     public function prepare($type, $coloumns, $table, $values) {
+
         $link = $this->open_database_connection();
         $this->db_link = $link;
+        
         switch($type) {
             case "SELECT":  //select every row operation
                 if($coloumns === '*' && $values == NULL) {
@@ -101,9 +103,11 @@ class database {
                     . " WHERE ";
                     //$i = 0;
                     foreach ($values as $key => $value) {
-                        $query .= $key . " = :" . $key . " ";
-                        //$i++;
+                        $query .= $key . " = :" . $key . " AND ";
                     }
+
+                    //trim the last , and blank space using rtrim()
+                    $query = rtrim($query," AND ");
                     $this->result = $link->prepare($query);
                 }
 
@@ -116,9 +120,14 @@ class database {
                     } 
                     $query .=  $coloumns[$n - 1] . " FROM `$table`"
                     . " WHERE ";
+                    
+                    // AND condition
                     foreach ($values as $key => $value) {
-                        $query .= $key . " = :" . $key . " ";
+                        $query .= $key . " = :" . $key . " AND ";
                     }
+
+                    //trim the last , and blank space using rtrim()
+                    $query = rtrim($query," AND ");
                     $this->result = $link->prepare($query);
                 }
                 return $this;
@@ -153,7 +162,7 @@ class database {
             $i = 0;
             foreach ($values as $key => &$value) {
                 $placeholder = ":" . $key;
-                $this->result->bindParam('{$placeholder}', $values[$key]);
+                $this->result->bindParam($placeholder, $values[$key]);
             }
         }
         return $this;
