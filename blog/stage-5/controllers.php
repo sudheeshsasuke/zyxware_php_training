@@ -14,6 +14,7 @@ class controllers extends model {
     public function show_action($id)
     {
         $post = $this->get_post($id);//TODO: get post by id
+        $comments = $this->get_comment($id);
         require 'templates/show.tpl.php';
     }
 
@@ -213,6 +214,10 @@ class controllers extends model {
                 $this->login();
             }
         }
+    }
+
+    public function comment_action() {
+        $this->register_comment();
     }
 }
 

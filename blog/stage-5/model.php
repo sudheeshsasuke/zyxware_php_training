@@ -52,11 +52,21 @@ class model extends database {
 
         //optimized code
         $values = array('id' => $id);
-        $posts = $this->prepare("SELECT" , "*", "post", $values)
+        $post = $this->prepare("SELECT" , "*", "post", $values)
                     ->bind($values)
                     ->execute()
                     ->fetch();
-        return $posts[0];
+
+        return $post[0];
+    }
+
+    public function get_comment($id) {
+        $query = "SELECT *, users.username AS uname FROM `comment`"
+        . " JOIN users ON comment.user_id = users.id"
+        . " WHERE post_id = :id";
+        $values = array('id' => $id);
+        $comments = $this->query_execute($query, $values);
+        return $comments;
     }
 
     //adding data to user database table
@@ -103,6 +113,18 @@ class model extends database {
                     ->execute();
         $_SESSION['image_name'] = $obj->last_insert_id(); //calling last inert id()seperately
         return $obj->t;         
+    }
+
+    public function register_comment() {
+
+        $values = array('user_id' => $_SESSION['user_id'],
+            'comment' => $_POST['comment_text'],
+            'date' => date("Y-m-d"),
+            'post_id' => $_POST['post_id']
+        );
+        $obj = $this->prepare("INSERT", NULL, 'comment', $values)
+                    ->bind($values)
+                    ->execute();
     }
 
     //checking user with user database table

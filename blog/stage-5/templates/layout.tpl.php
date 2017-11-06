@@ -5,6 +5,7 @@
   }
   else {
     $flag = 0;
+    $username = "";
   }
 
 ?>
@@ -23,6 +24,39 @@
     <link href="/stage-5/templates/css/style.css" rel="stylesheet">
 
     <!-- Javascipt files-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+      $(function() {
+          $('#commentform').submit(function() {
+            var postid = $("#postid").val();
+              $.ajax({
+                  type: 'POST',
+                  url: 'http://blog/stage-5/index.php/comment_action',
+                  data: { comment_text: $("#commentid").val(),
+                          post_id: $("#postid").val()
+                        },
+                  success: function(result) {
+                    $("#commentid").val(" ");
+                    show(postid);
+                  }
+              });
+              return false;
+          }); 
+      });
+
+      function show(postid) {
+        var link =  'http://blog/stage-5/index.php/show?id=' + postid;
+        $.ajax({
+                  url: link,
+                  success: function(result) {
+                    //alert(result);
+                    $('body').html(result);
+                  }
+              });
+      }
+    </script>
+
     <script type="text/javascript" src="/stage-5/templates/js/script.js"></script>
   </head>
 

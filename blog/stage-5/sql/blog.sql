@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 02, 2017 at 05:29 PM
+-- Generation Time: Nov 06, 2017 at 06:56 PM
 -- Server version: 5.7.20-0ubuntu0.16.04.1
 -- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
@@ -19,6 +19,51 @@ SET time_zone = "+00:00";
 --
 -- Database: `blog`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment`
+--
+
+CREATE TABLE `comment` (
+  `id` int(10) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `date` date NOT NULL,
+  `post_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`id`, `user_id`, `comment`, `date`, `post_id`) VALUES
+(1, 62, 'nice', '2017-11-06', 1),
+(2, 62, 'asads', '2017-11-06', 1),
+(3, 62, 'new', '2017-11-06', 1),
+(4, 62, 'zxc', '2017-11-06', 1),
+(5, 62, '', '2017-11-06', 1),
+(6, 62, 'yiiy', '2017-11-06', 1),
+(7, 62, 'cvb', '2017-11-06', 1),
+(8, 62, 'last comment', '2017-11-06', 1),
+(9, 62, 'fhfhfhfhg', '2017-11-06', 1),
+(10, 62, 'test', '2017-11-06', 1),
+(11, 62, 'test', '2017-11-06', 1),
+(12, 62, 'test', '2017-11-06', 1),
+(13, 62, 'test', '2017-11-06', 1),
+(14, 62, 'test', '2017-11-06', 1),
+(15, 62, 'test', '2017-11-06', 1),
+(16, 62, 'sdf', '2017-11-06', 1),
+(17, 62, 'new comment', '2017-11-06', 1),
+(18, 62, 'nice', '2017-11-06', 2),
+(19, 62, 'new', '2017-11-06', 2),
+(20, 62, 'hfhfh', '2017-11-06', 2),
+(21, 62, ' mn m,n,m', '2017-11-06', 2),
+(22, 62, 'bmvbmv', '2017-11-06', 2),
+(23, 62, 'cbvcvbcb', '2017-11-06', 2),
+(24, 62, 'test sdgdgdfg', '2017-11-06', 2),
+(25, 62, 'dfgdg', '2017-11-06', 2);
 
 -- --------------------------------------------------------
 
@@ -77,6 +122,14 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `image_path`) VALUES
 --
 
 --
+-- Indexes for table `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
 -- Indexes for table `post`
 --
 ALTER TABLE `post`
@@ -93,6 +146,11 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+--
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
@@ -102,6 +160,17 @@ ALTER TABLE `post`
 --
 ALTER TABLE `users`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

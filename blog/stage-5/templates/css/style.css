@@ -29,3 +29,13 @@
 body {
     background: rgb(255, 255, 255);
 }
+
+.comment {
+    color: red;
+}
+
+.boxcomment {
+    border: 1px dashed green;
+    padding: 5px;
+    margin-top: 10px;
+}

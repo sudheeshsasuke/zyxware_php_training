@@ -10,9 +10,7 @@ spl_autoload_register(function ($class_name) {
     require_once './' . $class_name . '.php';
 });
 
-if(isset($_SESSION['id'])) {
-    header('Location: http://blog/stage-5/index.php/Login');
-}
+
 
 // route the request internally
 //TODO: Get request path from php super global $_SERVER 
@@ -22,6 +20,10 @@ $controller = new controllers();
 
 if ('/stage-5/' == $uri) {
     
+    if(empty($_SESSION['user_id'])) {
+        header('Location: http://blog/stage-5/index.php/Login');
+    }
+
     //TODO: list action
     $controller->list_action();
     
@@ -35,6 +37,7 @@ elseif ('/stage-5/index.php/Login' == $uri) {
 elseif ('/stage-5/index.php/show' == $uri && isset($_GET['id'])) {
     
     //TODO: show action
+    $x = $_SESSION['user_id'];
     $controller->show_action($_GET['id']);
 } 
 elseif ('/stage-5/index.php/register' == $uri) {
@@ -51,6 +54,11 @@ elseif ('/stage-5/index.php/login_action' == $uri) {
     
     //TODO: resgister
     $controller->LoginAction($_POST['name'], $_POST['password']);  
+}
+elseif ('/stage-5/index.php/comment_action' == $uri) {
+    
+    //TODO: resgister
+    $controller->comment_action();  
 }
 elseif ('/stage-5/index.php/logout' == $uri) {
     
