@@ -8,6 +8,8 @@
         <ul>
             <li>
                 <a href="index.php/show?id=<?= $post['id']?>"><?= $post['title']?></a>
+                <br>
+                <a href="index.php/delete=?<?= $post['id']?>" class="btn btn-danger">DELETE</a>
             </li>
         </ul>
     <?php endforeach;?>

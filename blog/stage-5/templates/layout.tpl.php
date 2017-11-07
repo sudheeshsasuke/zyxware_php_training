@@ -27,9 +27,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
+ 
       $(function() {
+          $("#loader").hide();
           $('#commentform').submit(function() {
             var postid = $("#postid").val();
+            $("#loader").show();
               $.ajax({
                   type: 'POST',
                   url: 'http://blog/stage-5/index.php/comment_action',
@@ -38,6 +41,7 @@
                         },
                   success: function(result) {
                     $("#commentid").val(" ");
+                    $("#loader").hide();
                     show(postid);
                   }
               });
@@ -65,7 +69,7 @@
     <div class="blog-masthead">
       <div class="container">
         <nav class="blog-nav">
-          <a class="blog-nav-item active" href="/boot-camp">Home</a>
+          <a class="blog-nav-item active" href="/stage-5">Home</a>
           <a class="blog-nav-item" href="#">New features</a>
           <a class="blog-nav-item" href="#">Press</a>
           <a class="blog-nav-item" href="#">New hires</a>

@@ -14,13 +14,17 @@
     <br>
     <input type="number" value="<?php echo $id;?>" id="postid" hidden/>
     <br>
-    <input type="submit" value="submit">
-    <br>
+    <div id="button_loader" >
+      <input type="submit" value="submit" class="moveleft">
+      <div id="loader" class="moveleft">
+        <img src="http://blog/stage-5/img/loader.gif" width=100/>
+      </div>
+    </div>
   </form>
   <div class="boxcomment">
     <?php foreach($comments as $comment):?>
     <p>
-    <span class="comment"><?php echo htmlentities($comment['uname']);?></span>
+    <span style="color: blue"><?php echo htmlentities($comment['uname']);?></span>
     <br>
     commented on : <span class="comment"><?php echo htmlentities($comment['date']);?></span>
     <br> 

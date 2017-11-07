@@ -35,7 +35,22 @@ body {
 }
 
 .boxcomment {
-    border: 1px dashed green;
+    border: 1px solid green;
     padding: 5px;
     margin-top: 10px;
+    width: 400px;
+    height: 400px;
+    overflow: auto;
+}
+
+#loader {
+    z-index: 10;
+}
+
+.moveleft {
+    float:left;
+}
+
+#button_loader {
+    display: inline-block;
 }
