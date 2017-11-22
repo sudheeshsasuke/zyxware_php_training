@@ -11,37 +11,42 @@ echo " "
 read -p "Domain name? " domain_name
 echo " "
 
-#print he default root folder path
-echo "Deafult root folder is /home/user/Desktop/"
-
-#check whether the user wants the default root folder path
-read -p "Do you want to change root folder?[y/n] : " x
-
-#get the root folder path from user
-if [[ $x = "y" ]]; then 
-    read -p "enter root folder path: " domain_path
-
-#set the root folder path to default
-else
-    domain_path="/home/user/Desktop/"
-fi
-
-#add domain name into hosts file  
-sudo echo "127.0.0.1	$domain_name" >> /etc/hosts 
-echo " "
-
-#check whether the user wants the default apache2/sites-available folder path
-read -p "Do you want default apache2/sites-available path?[y/n]: " x
-
-#get the apache folder path from user
-if [[ $x = "y" ]]; then 
+#for default configuration
+# -y as second argument
+if [[ $1 = "-y" ]]; then
+    echo "you are using default cofiguration now"
+    domain_path="/var/www/"
     apache_path="/etc/apache2/sites-available"
-
-#set the apache folder path to default
 else
-    read -p "enter your apache2/sites-available path: " apache_path
+
+    #print he default root folder path
+    echo "Deafult root folder is /var/www/"
+
+    #check whether the user wants the default root folder path
+    read -p "Do you want to use default root folder?[y/n] : " x
+
+    #get the root folder path from user
+    if [[ $x = "y" ]]; then 
+        domain_path="/var/www/"
+
+    #set the root folder path to default
+    else
+        read -p "enter root folder path: " domain_path
+    fi
+
+    #check whether the user wants the default apache2/sites-available folder path
+    read -p "Do you want default apache2/sites-available path?[y/n]: " x
+
+    #get the apache folder path from user
+    if [[ $x = "y" ]]; then 
+        apache_path="/etc/apache2/sites-available"
+
+    #set the apache folder path to default
+    else
+        read -p "enter your apache2/sites-available path: " apache_path
+    fi
+    echo " "
 fi
-echo " "
 
 #check whether the domain already exists in that root folder
 if [ -e $apache_path/$domain_name.conf ]; then
@@ -51,6 +56,10 @@ if [ -e $apache_path/$domain_name.conf ]; then
     echo "----------------------------"
     exit
 fi
+
+#add domain name into hosts file  
+    sudo echo "127.0.0.1	$domain_name" >> /etc/hosts 
+    echo " "
 
 #write the configuration file and place it in apache folder path
 sudo echo "<VirtualHost *:80>
