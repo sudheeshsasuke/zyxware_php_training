@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+echo " "
+read -p "Domain name? " domain_name
+echo " "
+echo "Deafult root folder is /home/user/Desktop/"
+read -p "Do you want to change root folder?[y/n] : " x
+if [[ $x = "y" ]]; then 
+    read -p "enter root folder path: " domain_path
+else
+    domain_path="/home/user/Desktop/"
+fi
+sudo echo "127.0.0.1	$domain_name" >> /etc/hosts 
+echo " "
+read -p "do you want default apache2/sites-available path?[y/n]: " x
+if [[ $x = "y" ]]; then 
+    apache_path="/etc/apache2/sites-available"
+else
+    read -p "enter your apache2/sites-available path: " apache_path
+fi
+echo " "
+if [ -e $apache_path/$domain_name.conf ]; then
+    echo "----------------------------"
+    echo "This domain already exists!"
+    echo "Please try anothe one"
+    echo "----------------------------"
+    exit
+fi
+sudo echo "<VirtualHost *:80>
+  ServerName $domain_name
+  ServerAdmin webmaster@localhost
+  DocumentRoot $domain_path
+  <Directory $domain_path>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+  </Directory>
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>" > $apache_path/$domain_name.conf
+cd /etc/apache2/sites-available
+sudo a2ensite $domain_name.conf
+sudo service apache2 restart 
