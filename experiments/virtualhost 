@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+
+#
+#   bash script for setting up a virtual host in apache2 server
+#
+
+#for spacing in terminal
+echo " "
+
+#get the domain name from user
+read -p "Domain name? " domain_name
+echo " "
+
+#print he default root folder path
+echo "Deafult root folder is /home/user/Desktop/"
+
+#check whether the user wants the default root folder path
+read -p "Do you want to change root folder?[y/n] : " x
+
+#get the root folder path from user
+if [[ $x = "y" ]]; then 
+    read -p "enter root folder path: " domain_path
+
+#set the root folder path to default
+else
+    domain_path="/home/user/Desktop/"
+fi
+
+#add domain name into hosts file  
+sudo echo "127.0.0.1	$domain_name" >> /etc/hosts 
+echo " "
+
+#check whether the user wants the default apache2/sites-available folder path
+read -p "Do you want default apache2/sites-available path?[y/n]: " x
+
+#get the apache folder path from user
+if [[ $x = "y" ]]; then 
+    apache_path="/etc/apache2/sites-available"
+
+#set the apache folder path to default
+else
+    read -p "enter your apache2/sites-available path: " apache_path
+fi
+echo " "
+
+#check whether the domain already exists in that root folder
+if [ -e $apache_path/$domain_name.conf ]; then
+    echo "----------------------------"
+    echo "This domain already exists!"
+    echo "Please try anothe one"
+    echo "----------------------------"
+    exit
+fi
+
+#write the configuration file and place it in apache folder path
+sudo echo "<VirtualHost *:80>
+  ServerName $domain_name
+  ServerAdmin webmaster@localhost
+  DocumentRoot $domain_path
+  <Directory $domain_path>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+  </Directory>
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>" > $apache_path/$domain_name.conf
+
+#go to apache folder path
+cd $apache_path
+
+#enable the configuration file
+sudo a2ensite $domain_name.conf
+
+#restart the apache server
+sudo service apache2 restart 
+
+#print success message
+echo " "
+echo "----------------------------"
+echo "You have successfully created the domain : http://$domain_name"
+echo "with root folder : $domain_path"
+echo "----------------------------"
+exit
