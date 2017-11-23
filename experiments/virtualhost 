@@ -14,7 +14,7 @@ echo " "
 #for default configuration
 # -y as second argument
 if [[ $1 = "-y" ]]; then
-    echo "you are using default cofiguration now"
+    echo "You are using default cofiguration now"
     domain_path="/var/www/"
     apache_path="/etc/apache2/sites-available"
 else
@@ -29,9 +29,8 @@ else
     if [[ $x = "y" ]]; then 
         domain_path="/var/www/"
 
-    #set the root folder path to default
-    else
-        read -p "enter root folder path: " domain_path
+    else #set the root folder path to default
+        read -p "Enter root folder path: " domain_path
     fi
 
     echo " "
@@ -45,7 +44,7 @@ else
 
     #set the apache folder path to default
     else
-        read -p "enter your apache2/sites-available path: " apache_path
+        read -p "Enter your apache2/sites-available path: " apache_path
     fi
     echo " "
 fi
@@ -60,22 +59,23 @@ if [ -e $apache_path/$domain_name.conf ]; then
 fi
 
 #add domain name into hosts file  
-    sudo echo "127.0.0.1	$domain_name" >> /etc/hosts 
-    echo " "
+sudo echo "127.0.0.1	$domain_name" >> /etc/hosts 
+echo " "
 
 #write the configuration file and place it in apache folder path
-sudo echo "<VirtualHost *:80>
-  ServerName $domain_name
-  ServerAdmin webmaster@localhost
-  DocumentRoot $domain_path
-  <Directory $domain_path>
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-  </Directory>
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>" > $apache_path/$domain_name.conf
+sudo echo "
+    <VirtualHost *:80>
+        ServerName $domain_name
+        ServerAdmin webmaster@localhost
+        DocumentRoot $domain_path
+        <Directory $domain_path>
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
+        </Directory>
+            ErrorLog ${APACHE_LOG_DIR}/error.log
+            CustomLog ${APACHE_LOG_DIR}/access.log combined
+    </VirtualHost>" > $apache_path/$domain_name.conf
 
 #go to apache folder path
 cd $apache_path
